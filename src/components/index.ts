@@ -1,1 +1,1 @@
-import {MapSVG} from './MapSVG'
+export { Map } from './Map'
