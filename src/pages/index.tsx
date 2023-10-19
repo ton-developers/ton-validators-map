@@ -1,11 +1,21 @@
-import Head from 'next/head'
-import Image from 'next/image'
 import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
-import { MapSVG } from '@/components/MapSVG'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { Map } from '@/components'
 
 const inter = Inter({ subsets: ['latin'] })
+
+const mockNodes = [
+  {
+    latitude: 51.1878,
+    longitude: 6.8607,
+    count: 20,
+  },
+  {
+    latitude: 49.405,
+    longitude: 11.1617,
+    count: 20,
+  },
+];
 
 interface Validator {
   stake?: number,
@@ -67,10 +77,7 @@ export default function Home({
         width: '60%'
       }}
     >
-      <MapSVG 
-        viewBoxHeight={595}
-        viewBoxWidth={1120}
-      />
+      <Map nodes={mockNodes} />
     </div>
   )
 }
