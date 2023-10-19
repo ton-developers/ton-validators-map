@@ -31,9 +31,9 @@ interface DataList {
 }
 
 interface Node {
-  count?: number,
-  latitude?: number,
-  longitude?: number,
+  count: number,
+  latitude: number,
+  longitude: number,
 }
 
 export const getServerSideProps = (async () => {
@@ -77,7 +77,7 @@ export default function Home({
         width: '60%'
       }}
     >
-      <Map nodes={mockNodes} />
+      <Map nodes={validators} />
     </div>
   )
 }
