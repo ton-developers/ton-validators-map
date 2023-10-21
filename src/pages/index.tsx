@@ -87,6 +87,7 @@ export default function Home({
             className={styles.stakeMobile}
           />
           <Card title="Nodes" value={`${count || 0}+`} />
+          <span className={styles.break}/>
           <Card title="Countries" value={`${countries || 0}+`} />
         </div>
       </div>

@@ -4,6 +4,7 @@
   align-items: flex-start;
   gap: 10px;
   max-height: 72px;
+  flex-grow: 1;
 }
 
 .value {
@@ -21,4 +22,26 @@
   font-weight: 400;
   line-height: 28px; /* 155.556% */
   letter-spacing: -0.025px;
+}
+
+@media screen and (max-width: 1440px) {
+  .value {
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px; /* 127.273% */
+    letter-spacing: -0.031px;
+  }
+
+  .title {
+    font-variant-numeric: lining-nums tabular-nums;
+
+    /* Mobile/Body 2/Regular */
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 142.857% */
+    letter-spacing: -0.008px;
+  }
 }
