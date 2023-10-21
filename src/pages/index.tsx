@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import { Map } from '@/components'
+import { Card, Container, Map } from '@/components'
+import styles from '../styles/Home.module.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -28,6 +29,7 @@ interface DataList {
   countriesCount?: number,
   count?: number,
   items?: Validator[],
+  totalStake?: number,
 }
 
 interface Node {
@@ -42,11 +44,9 @@ export const getServerSideProps = (async () => {
   const count = data?.count;
   const countries = data?.countriesCount
   const validators: Record<string, Node> = {}
-  const validatorsArray = []
-  let totalStake = 0;
+  const totalStake = data?.totalStake;
   if (data.items){
     data.items.forEach((node) => {
-      totalStake += node.stake || 0,
       validators[`${node.latitude}-${node.longitude}`] = {
         count: (validators[`${node.latitude}-${node.longitude}`]?.count || 0) + 1,
         latitude: node.latitude,
@@ -59,25 +59,59 @@ export const getServerSideProps = (async () => {
     props: { 
       validators: Object.values(validators),
       totalStake,
+      count,
+      countries,
     } 
 }
 }) satisfies GetServerSideProps<{
-  validators: Node[],
-  totalStake: number,
+  props: {
+    validators: Node[],
+    totalStake: number,
+    count: number,
+    countries: number,
+  }
 }>;
 
+const formatStake = (value: number) => Math.round(value).toLocaleString('RU-ru').replace(',', ' ')
+const formatter = Intl.NumberFormat('en', { notation: 'compact' });
 export default function Home({
   validators,
   totalStake,
+  count,
+  countries,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <div
-      style={{
-        height: '40%',
-        width: '60%'
-      }}
-    >
-      <Map nodes={validators} />
+    <main className={inter.className}>
+    <div className={styles.wrapper}>
+      <span className={styles.title}>
+      Validator nodes are distributed all around the world
+      </span>
+      <Container
+        className={styles.map}
+      >
+        <Map nodes={validators} />
+      </Container>
+      <div className={styles.cards}>
+      <Card
+        title='Total stake'
+        value={`${formatStake((totalStake || 0) / 1_000_000_000)} TON`}
+        className={styles.stake}
+      />
+      <Card
+        title='Total stake'
+        value={`${formatter.format((totalStake || 0) / 1_000_000_000)}+`}
+        className={styles.stakeMobile}
+      />
+      <Card
+        title='Nodes'
+        value={`${count}+`}
+      />
+      <Card
+        title='Countries'
+        value={`${countries}+`}
+      />
+      </div>
     </div>
+    </main>
   )
 }
