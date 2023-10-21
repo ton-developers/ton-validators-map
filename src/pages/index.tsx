@@ -24,6 +24,30 @@ interface Node {
   longitude: number;
 }
 
+function getDistanceFromLatLonInKm(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2 - lat1); // deg2rad below
+  var dLon = deg2rad(lon2 - lon1);
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) *
+      Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c; // Distance in km
+  return d;
+}
+
+function deg2rad(deg: number) {
+  return deg * (Math.PI / 180);
+}
+
 export const getServerSideProps = async () => {
   const res = await fetch(
     "https://wtfomotydwju2q6x6zjjhlswmi0cczub.lambda-url.eu-central-1.on.aws/"
@@ -47,9 +71,40 @@ export const getServerSideProps = async () => {
     });
   }
 
+  const validatorsKeys = Object.keys(validators);
+  const networks: Array<[[number, number], [number, number]]> = [];
+
+  for (let index = 0; index < validatorsKeys.length - 1; index++) {
+    const key = validatorsKeys[index];
+    for (
+      let subIndex = index + 1;
+      subIndex < validatorsKeys.length;
+      subIndex++
+    ) {
+      const subKey = validatorsKeys[subIndex];
+      const [lat1, lon1] = key.split("-");
+      const [lat2, lon2] = subKey.split("-");
+
+      const distance = getDistanceFromLatLonInKm(
+        parseFloat(lat1),
+        parseFloat(lon1),
+        parseFloat(lat2),
+        parseFloat(lon2)
+      );
+
+      if (distance >= 2000) {
+        networks.push([
+          [parseFloat(lat1), parseFloat(lon1)],
+          [parseFloat(lat2), parseFloat(lat2)],
+        ]);
+      }
+    }
+  }
+
   return {
     props: {
       validators: Object.values(validators),
+      networks,
       totalStake,
       count,
       countries,
@@ -62,6 +117,7 @@ const formatStake = (value: number) =>
 const formatter = Intl.NumberFormat("en", { notation: "compact" });
 export default function Home({
   validators,
+  networks,
   totalStake,
   count,
   countries,
@@ -73,7 +129,7 @@ export default function Home({
           Validator nodes are distributed all around the world
         </span>
         <Container className={styles.map}>
-          <Map nodes={validators} />
+          <Map nodes={validators} networks={networks} />
         </Container>
         <div className={styles.cards}>
           <Card

@@ -17,14 +17,17 @@ interface Node {
 }
 
 interface SVGProps {
+  networks: Array<[[number, number], [number, number]]>;
   nodes: Node[];
   // add white and other themes if need
   theme?: "dark" | "light";
-  width?: number | string;
-  height?: number | string;
 }
 
-export const Map: React.FC<SVGProps> = ({ nodes, theme = "dark" }) => {
+export const Map: React.FC<SVGProps> = ({
+  networks,
+  nodes,
+  theme = "dark",
+}) => {
   return (
     <svg
       width="100%"
@@ -111,14 +114,38 @@ export const Map: React.FC<SVGProps> = ({ nodes, theme = "dark" }) => {
       />
 
       <g transform="translate(-110, 140)">
-        {nodes.map(({ count, latitude, longitude }, index) => {
+        {networks.map((item) => {
+          const [point1, point2] = item;
+          const [lat1, lon1] = point1;
+          const [lat2, lon2] = point2;
+          const x1 = getXByLong(lon1);
+          const y1 = getYByLong(lat1);
+
+          const x2 = getXByLong(lon2);
+          const y2 = getYByLong(lat2);
+          return (
+            <line
+              key={`${lat1}-${lon1}-${lat2}-${lon2}`}
+              x1={x1}
+              x2={x2}
+              y1={y1}
+              y2={y2}
+              stroke="red"
+              strokeWidth={3}
+            />
+          );
+        })}
+        {nodes.map(({ count, latitude, longitude }) => {
           const x = getXByLong(longitude);
           const y = getYByLong(latitude);
           const isBig = count > 10;
 
           const circleSize = isBig ? 15 : 10;
           return (
-            <g key={`${latitude}-${longitude}`} transform={`translate(${x}, ${y})`}>
+            <g
+              key={`${latitude}-${longitude}`}
+              transform={`translate(${x}, ${y})`}
+            >
               <circle
                 className={classnames(styles.circle, styles.edge)}
                 r={circleSize}
