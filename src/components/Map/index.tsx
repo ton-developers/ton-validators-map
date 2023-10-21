@@ -2,7 +2,15 @@ import * as React from "react";
 import classnames from "classnames";
 import styles from "./styles.module.css";
 
-interface Node {
+const MAP_WIDTH = 1180;
+const MAP_HEIGHT = 760;
+
+const getXByLong = (longitude: number) =>
+  ((MAP_WIDTH + 175) / 360.0) * (180 + longitude);
+const getYByLong = (latitude: number) =>
+  ((MAP_HEIGHT - 20) / 180.0) * (90 - latitude);
+
+  interface Node {
   count: number;
   latitude: number;
   longitude: number;
@@ -16,29 +24,27 @@ interface SVGProps {
   height?: number | string;
 }
 
-export const Map: React.FC<SVGProps> = ({
-  nodes,
-  theme = "dark",
-  width = 1180,
-  height = 760,
-}) => {
+export const Map: React.FC<SVGProps> = ({ nodes, theme = "dark" }) => {
   return (
     <svg
       width="100%"
       height="100%"
-      viewBox={`${0} ${0} ${width} ${height}`}
+      viewBox={`${0} ${0} ${MAP_WIDTH} ${MAP_HEIGHT}`}
       className={classnames(styles.map, styles[theme])}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g>
-        {nodes.map(({ count, latitude, longitude }) => (
+      <g transform="translate(-110, 140)">
+        {nodes.map(({ count, latitude, longitude }, index) => (
           <g key={`${latitude}-${longitude}`}>
             <circle
-              r={10}
-              fill="blue"
-              cx={(1180 / 360.0) * (180 + longitude)}
-              cy={(760 / 180.0) * (90 - latitude)}
+              r={count > 10 ? 15 : 10}
+              fill={"#07ACFF"}
+              cx={getXByLong(longitude)}
+              cy={getYByLong(latitude)}
             />
+            <text fill="black" x={0} y={0}>
+              {count}
+            </text>
           </g>
         ))}
       </g>
