@@ -71,31 +71,26 @@ export const getServerSideProps = async () => {
     });
   }
 
-  const validatorsKeys = Object.keys(validators);
+  const validatorsValues = Object.values(validators);
   const networks: Array<[[number, number], [number, number]]> = [];
 
-  for (let index = 0; index < validatorsKeys.length - 1; index++) {
-    const key = validatorsKeys[index];
+  for (let index = 0; index < validatorsValues.length - 1; index++) {
+    const validator1 = validatorsValues[index];
     for (
       let subIndex = index + 1;
-      subIndex < validatorsKeys.length;
+      subIndex < index + 2 && subIndex < validatorsValues.length;
       subIndex++
     ) {
-      const subKey = validatorsKeys[subIndex];
-      const [lat1, lon1] = key.split("-");
-      const [lat2, lon2] = subKey.split("-");
+      const validator2 = validatorsValues[subIndex];
+      const { latitude: lat1, longitude: lon1 } = validator1;
+      const { latitude: lat2, longitude: lon2 } = validator2;
 
-      const distance = getDistanceFromLatLonInKm(
-        parseFloat(lat1),
-        parseFloat(lon1),
-        parseFloat(lat2),
-        parseFloat(lon2)
-      );
+      const distance = getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2);
 
       if (distance >= 2000) {
         networks.push([
-          [parseFloat(lat1), parseFloat(lon1)],
-          [parseFloat(lat2), parseFloat(lat2)],
+          [lat1, lon1],
+          [lat2, lon2],
         ]);
       }
     }
@@ -143,7 +138,7 @@ export default function Home({
             className={styles.stakeMobile}
           />
           <Card title="Nodes" value={`${count || 0}+`} />
-          <span className={styles.break}/>
+          <span className={styles.break} />
           <Card title="Countries" value={`${countries || 0}+`} />
         </div>
       </div>

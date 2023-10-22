@@ -2,6 +2,31 @@ import * as React from "react";
 import classnames from "classnames";
 import styles from "./styles.module.css";
 
+type Point = {
+  x: number;
+  y: number;
+};
+
+function calculatePath(start: Point, end: Point) {
+  const a = start;
+  const b = {
+    x: start.x + (end.x - start.x) / 2,
+    y: start.y + (end.y - start.y) / 2,
+  };
+  const ab = Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
+  const v1x = (b.x = a.x) / ab;
+  const v1y = (b.y - a.y) / ab;
+  const v3x = (v1y > 0 ? -v1y : v1y) * (ab * 0.2);
+  const v3y = (v1x > 0 ? -v1x : v1x) * (ab * 0.2);
+  const cx = a.x + v3x;
+  const cy = a.y + v3y;
+
+  return `
+    M ${start.x},${start.y} 
+    Q ${cx},${cy} ${end.x},${end.y} 
+  `;
+}
+
 const MAP_WIDTH = 1180;
 const MAP_HEIGHT = 760;
 
@@ -124,14 +149,12 @@ export const Map: React.FC<SVGProps> = ({
           const x2 = getXByLong(lon2);
           const y2 = getYByLong(lat2);
           return (
-            <line
+            <path
               key={`${lat1}-${lon1}-${lat2}-${lon2}`}
-              x1={x1}
-              x2={x2}
-              y1={y1}
-              y2={y2}
-              stroke="red"
-              strokeWidth={3}
+              d={calculatePath({ x: x1, y: y1 }, { x: x2, y: y2 })}
+              fill="transparent"
+              stroke="gray"
+              strokeWidth={2}
             />
           );
         })}
