@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-type TonValidatorsCollection = {
+export type TonValidatorsCollection = {
   count: number,
   items: {
     id: string,
