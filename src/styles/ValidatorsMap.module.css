@@ -18,6 +18,8 @@
 }
 
 .validatorsLink {
-  stroke: #FFF;
+  stroke: url(#connection-linear-gradient);
   stroke-width: 2px;
+  stroke-linecap: round;
+  fill: none;
 }

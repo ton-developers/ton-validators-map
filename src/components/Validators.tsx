@@ -38,14 +38,28 @@ export default function Validators({ mapConverter }: ValidatorsMapProps) {
   return (
     <>
       <g>
+        <defs>
+          <linearGradient 
+            id="connection-linear-gradient"
+            gradientTransform="rotate(145 .5 .5)">
+              <stop offset="0" stopColor="#FFF" />
+              <stop offset="1" stopColor="#FFF" stopOpacity={0.05} />
+          </linearGradient>
+        </defs>
         {
-          lines.map((pointPair, index) => (
-            <path
-              key={`line-${index}`}
-              d={`M${pointPair[0][0]} ${pointPair[0][1]} ${pointPair[1][0]} ${pointPair[1][1]}`}
-              className={styles.validatorsLink}
-            />
-          ))
+          lines.map((pointPair, index) => {
+            const middlePoint = [
+              (pointPair[0][0] + pointPair[1][0]) / 2 + 10,
+              (pointPair[0][1] + pointPair[1][1]) / 2 - 20
+            ];
+            return (
+              <path
+                key={`line-${index}`}
+                d={`M${pointPair[0][0]} ${pointPair[0][1]} Q ${middlePoint[0]} ${middlePoint[1]} ${pointPair[1][0]} ${pointPair[1][1]}`}
+                className={styles.validatorsLink}
+              />
+            )
+          })
         }
       </g>
       <g>
