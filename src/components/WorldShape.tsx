@@ -3,10 +3,10 @@ import { useContinents } from '@/hooks/useContinents'
 import styles from '@/styles/ValidatorsMap.module.css'
 
 export interface WorldShapeProps {
-  converter: MapConverter
+  mapConverter: MapConverter
 }
 
-export default function WorldShape({ converter }: WorldShapeProps) {
+export default function WorldShape({ mapConverter }: WorldShapeProps) {
   const {data, loading} = useContinents()
 
   return (
@@ -23,7 +23,7 @@ export default function WorldShape({ converter }: WorldShapeProps) {
                 return (<>
                   <polygon
                     key={`${continentName}-${featureIndex}-${coordsIndex}-${coords1Index}`}
-                    points={coords2.map((coords3) => converter.svgCoordsFromGeoCoords(coords3).join(',')).join(' ')}
+                    points={coords2.map((coords3) => mapConverter.svgCoordsFromGeoCoords(coords3).join(',')).join(' ')}
                     className={styles.continent}
                   />
                 </>)

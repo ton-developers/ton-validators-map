@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 
 export type TonValidatorsCollection = {
   count: number,
+  countriesCount: number,
+  totalStake: number,
   items: {
     id: string,
     stake: number,

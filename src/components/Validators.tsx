@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useTonValidators } from "@/hooks/useTonValidators";
+import type { useTonValidators } from "@/hooks/useTonValidators";
 import type { MapConverter } from "@/utils/MapConverter";
 import { clusterizeValidators } from "@/utils/clusterizeValidators";
 import { Line, Point, areLinesIntersecting, getLineLength } from "@/utils/lineUtils";
@@ -9,10 +9,10 @@ import Validator from "./Validator";
 
 export interface ValidatorsMapProps {
   mapConverter: MapConverter;
+  data: ReturnType<typeof useTonValidators>["data"];
 }
 
-export default function Validators({ mapConverter }: ValidatorsMapProps) {
-  const { data, loading } = useTonValidators();
+export default function Validators({ mapConverter, data }: ValidatorsMapProps) {
   const [clusters, setClusters] = useState<ReturnType<typeof clusterizeValidators>>([]);
   const [lines, setLines] = useState<Line[]>([]);
 
