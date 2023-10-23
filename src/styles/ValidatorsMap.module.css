@@ -7,6 +7,12 @@
   fill: #7e7e7e;
 }
 
-.validator {
+.validatorDot {
   fill: #34BCFF;
+}
+
+.validatorText {
+  fill: #FFF;
+  text-anchor: middle;
+  dominant-baseline: middle;
 }

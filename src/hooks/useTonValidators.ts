@@ -12,7 +12,7 @@ export type TonValidatorsCollection = {
 }
 
 export function useTonValidators() {
-  const [data, setData] = useState<TonValidatorsCollection>()
+  const [data, setData] = useState<TonValidatorsCollection | null>(null)
   const [error, setError] = useState<Error>()
   const [loading, setLoading] = useState(true)
   useEffect(() => {
