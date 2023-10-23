@@ -19,7 +19,22 @@
 
 .validatorsLink {
   stroke: url(#connection-linear-gradient);
-  stroke-width: 2px;
+  stroke-width: 1px;
   stroke-linecap: round;
   fill: none;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: dash 20s linear var(--animation-delay, 0s) forwards infinite;
+}
+
+@keyframes dash {
+  15% {
+    stroke-dashoffset: 0;
+  }
+  85% {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -1000;
+  }
 }

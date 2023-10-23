@@ -12,6 +12,10 @@ export default function ValidatorsConnection({ line }: ValidatorsConnectionProps
   return (
     <>
       <path
+        style={{
+          // @ts-ignore
+          '--animation-delay': `${Math.random() * 20}s`
+        }}
         d={`M${line[0][0]} ${line[0][1]} Q ${middlePoint[0]} ${middlePoint[1]} ${line[1][0]} ${line[1][1]}`}
         className={styles.validatorsLink}
       />
