@@ -1,5 +1,6 @@
 export type Point = [number, number]
 export type Line = [Point, Point]
+export type Vector = Point
 
 export function getLineLength(line: Line) {
   const [p1, p2] = line
@@ -20,4 +21,34 @@ export function areLinesIntersecting(line1: Line, line2: Line): boolean {
     const gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
     return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
   }
+}
+
+export function getLineMidpoint(line: Line): Point {
+  const [p1, p2] = line
+  return [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2]
+}
+
+export function getPerpendicularVector(line: Line, length: number): Point {
+  const [p1, p2] = line
+  const vector: Vector = [p2[0] - p1[0], p2[1] - p1[1]]
+
+  const knownX = 1
+
+  const perpendicularVector: Vector = [knownX, -vector[0] / vector[1] * knownX]
+
+  return getVectorOfLength(perpendicularVector, length)
+}
+
+export function getVectorOfLength(vector: Vector, length: number): Vector {
+  const [x, y] = vector
+  const ratio = length / Math.sqrt(x * x + y * y)
+  return [x * ratio, y * ratio]
+}
+
+export function addVectors(v1: Vector, v2: Vector): Vector {
+  return [v1[0] + v2[0], v1[1] + v2[1]]
+}
+
+export function reverseVector(vector: Vector): Vector {
+  return [-vector[0], -vector[1]]
 }

@@ -1,4 +1,4 @@
-import type { Line, Point } from "@/utils/lineUtils";
+import { Line, getLineMidpoint, getPerpendicularVector, addVectors, getLineLength } from "@/utils/lineUtils";
 import styles from "@/styles/ValidatorsMap.module.css";
 
 export interface ValidatorsConnectionProps {
@@ -6,15 +6,16 @@ export interface ValidatorsConnectionProps {
 }
 
 export default function ValidatorsConnection({ line }: ValidatorsConnectionProps) {
-  const middlePoint: Point = [
-    (line[0][0] + line[1][0]) / 2 + 10,
-    (line[0][1] + line[1][1]) / 2 - 20
-  ];
+  let middlePoint = getLineMidpoint(line);
+  const middleDelta = getPerpendicularVector(line, 5 + Math.log(getLineLength(line)));
+  middlePoint = addVectors(middlePoint, middleDelta);
   return (
-    <path
-      d={`M${line[0][0]} ${line[0][1]} Q ${middlePoint[0]} ${middlePoint[1]} ${line[1][0]} ${line[1][1]}`}
-      className={styles.validatorsLink}
-    />
+    <>
+      <path
+        d={`M${line[0][0]} ${line[0][1]} Q ${middlePoint[0]} ${middlePoint[1]} ${line[1][0]} ${line[1][1]}`}
+        className={styles.validatorsLink}
+      />
+    </>
   )
 
 }
