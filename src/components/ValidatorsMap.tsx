@@ -12,7 +12,8 @@ export default function ValidatorsMap() {
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="90 90 910 500" className={styles.map}>
         {
           data?.features.flatMap((continent, featureIndex) => {
-            if (continent.properties?.CONTINENT === "Antarctica") return null
+            const continentName = continent.properties?.CONTINENT
+            if (continentName === "Antarctica") return null
             const geometry = continent.geometry
             if (geometry.type === 'MultiPolygon') {
               return geometry.coordinates.map((coords1, coordsIndex) => {
@@ -20,7 +21,7 @@ export default function ValidatorsMap() {
                   if (coords1Index > 0) return null
                   return (<>
                     <polygon
-                      key={`${featureIndex}-${coordsIndex}-${coords1Index}`}
+                      key={`${continentName}-${featureIndex}-${coordsIndex}-${coords1Index}`}
                       points={coords2.map((coords3) => converter.svgCoordsFromGeoCoords(coords3).join(',')).join(' ')}
                       className={styles.continent}
                     />
