@@ -5,9 +5,13 @@ export class MapConverter {
   ) {}
 
   public svgCoordsFromGeoCoords(geoCoords: number[]) {
-    const [lat, lon] = geoCoords;
+    const [lon, lat] = geoCoords;
     const x = (lon + 180) * (this.mapWidth / 360);
     const y = ((lat * -1) + 90) * (this.mapHeight / 180);
-    return [x, y];
+    return [this.roundTo(x), this.roundTo(y)];
+  }
+
+  private roundTo(num: number, places = 2) {
+    return Math.round(num * 10 ** places) / 10 ** places;
   }
 }
