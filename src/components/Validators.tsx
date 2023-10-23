@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { useTonValidators } from "@/hooks/useTonValidators";
 import type { MapConverter } from "@/utils/MapConverter";
 import { clusterizeValidators } from "@/utils/clusterizeValidators";
-import { connectDots } from "@/utils/connectDots";
-import styles from "@/styles/ValidatorsMap.module.css";
+import { Line, Point, areLinesIntersecting, getLineLength } from "@/utils/lineUtils";
+
+import ValidatorsConnection from "./ValidatorsConnection";
+import Validator from "./Validator";
 
 export interface ValidatorsMapProps {
   mapConverter: MapConverter;
@@ -12,7 +14,7 @@ export interface ValidatorsMapProps {
 export default function Validators({ mapConverter }: ValidatorsMapProps) {
   const { data, loading } = useTonValidators();
   const [clusters, setClusters] = useState<ReturnType<typeof clusterizeValidators>>([]);
-  const [lines, setLines] = useState<number[][][]>([]);
+  const [lines, setLines] = useState<Line[]>([]);
 
   useEffect(() => {
     if (data) {
@@ -32,7 +34,7 @@ export default function Validators({ mapConverter }: ValidatorsMapProps) {
 
   return (
     <>
-      <g>
+      <g id="connections">
         <defs>
           <linearGradient 
             id="connection-linear-gradient"
@@ -42,48 +44,48 @@ export default function Validators({ mapConverter }: ValidatorsMapProps) {
           </linearGradient>
         </defs>
         {
-          lines.map((pointPair, index) => {
-            const middlePoint = [
-              (pointPair[0][0] + pointPair[1][0]) / 2 + 10,
-              (pointPair[0][1] + pointPair[1][1]) / 2 - 20
-            ];
-            return (
-              <path
-                key={`line-${index}`}
-                d={`M${pointPair[0][0]} ${pointPair[0][1]} Q ${middlePoint[0]} ${middlePoint[1]} ${pointPair[1][0]} ${pointPair[1][1]}`}
-                className={styles.validatorsLink}
-              />
-            )
-          })
+          lines.map((pointPair, index) => (<>
+            <ValidatorsConnection key={`line-${index}`} line={pointPair} />
+          </>))
         }
       </g>
-      <g>
+      <g id="validators">
         {
-          clusters.map((item, index) => {
-            const count = item.properties.point_count || 1;
-            const coords = mapConverter.svgCoordsFromGeoCoords(item.geometry.coordinates);
-            const radius = 5 + Math.log(count) * 2;
-            const fontSize = 7 + Math.log(count) / 3;
-            return (
-              <g key={`validator-${index}`}>
-                <circle
-                  cx={coords[0]}
-                  cy={coords[1]}
-                  r={radius}
-                  className={styles.validatorDot}
-                />
-                <text
-                  x={coords[0]}
-                  y={coords[1]}
-                  dy={fontSize / 6}
-                  fontSize={fontSize}
-                  className={styles.validatorText}
-                >{count}</text>
-              </g>
-            )
-          })
+          clusters.map((item, index) => (<>
+            <Validator key={`validator-${index}`} mapConverter={mapConverter} item={item} />
+          </>))
         }
       </g>
     </>
   )
+}
+
+function connectDots(points: Point[]) {
+  const lines = connectAllToAll(points)
+  const linesToRemove: number[] = []
+  for (let i = 0; i < lines.length - 1; i++) {
+    for (let j = i + 1; j < lines.length; j++) {
+      if (linesToRemove.includes(j) || linesToRemove.includes(i)) {
+        continue
+      }
+      if (areLinesIntersecting(lines[i], lines[j])) {
+        if (getLineLength(lines[i]) > getLineLength(lines[j])) {
+          linesToRemove.push(i)
+        } else {
+          linesToRemove.push(j)
+        }
+      }
+    }
+  }
+  return lines.filter((_, i) => !linesToRemove.includes(i))
+}
+
+function connectAllToAll(points: Point[]) {
+  const lines: Line[] = []
+  for (let i = 0; i < points.length - 1; i++) {
+    for (let j = i + 1; j < points.length; j++) {
+      lines.push([points[i], points[j]])
+    }
+  }
+  return lines
 }
