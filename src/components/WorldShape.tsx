@@ -10,7 +10,7 @@ export default function WorldShape({ converter }: WorldShapeProps) {
   const {data, loading} = useContinents()
 
   return (
-    <>
+    <g>
       {
         data?.features.flatMap((continent, featureIndex) => {
           const continentName = continent.properties?.CONTINENT
@@ -33,7 +33,7 @@ export default function WorldShape({ converter }: WorldShapeProps) {
           return null
         })
       }
-    </>
+    </g>
   )
 
 }

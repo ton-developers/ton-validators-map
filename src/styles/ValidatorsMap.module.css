@@ -16,3 +16,8 @@
   text-anchor: middle;
   dominant-baseline: middle;
 }
+
+.validatorsLink {
+  stroke: #FFF;
+  stroke-width: 2px;
+}
