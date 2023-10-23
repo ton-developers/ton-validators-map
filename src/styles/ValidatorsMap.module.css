@@ -11,6 +11,17 @@
   fill: #34BCFF;
 }
 
+.validatorDotPulse {
+  --active-opacity: 0.7;
+  --active-scale: 1;
+  --off-opacity: 0;
+  --off-scale: 0;
+  fill: #34BCFF;
+  opacity: var(--active-opacity);
+  transform: scale(0);
+  animation: pulse 20s linear var(--animation-delay, 0s) forwards infinite;
+}
+
 .validatorText {
   fill: #FFF;
   text-anchor: middle;
@@ -36,5 +47,16 @@
   }
   to {
     stroke-dashoffset: -1000;
+  }
+}
+
+@keyframes pulse {
+  70%, 80.0001%, 90.0001% {
+    transform: scale(var(--off-scale));
+    opacity: var(--active-opacity);
+  }
+  80%, 90%, 100% {
+    transform: scale(var(--active-scale));
+    opacity: var(--off-opacity);
   }
 }

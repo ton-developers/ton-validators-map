@@ -14,7 +14,17 @@ export default function Validator({ mapConverter, item }: ValidatorProps) {
   const fontSize = 7 + Math.log(count) / 3;
 
   return (
-    <g>
+    <g style={{
+      // @ts-ignore
+      '--animation-delay':  `${Math.random() * 20}s`
+    }}>
+      <circle
+        cx={coords[0]}
+        cy={coords[1]}
+        r={3 + radius * 2}
+        transform-origin={`${coords[0]} ${coords[1]}`}
+        className={styles.validatorDotPulse}
+      />
       <circle
         cx={coords[0]}
         cy={coords[1]}
