@@ -20,17 +20,12 @@ export default function Validators({ mapConverter }: ValidatorsMapProps) {
       setClusters(clusters);
       const lines = connectDots(clusters.map(item => {
         const coords = mapConverter.svgCoordsFromGeoCoords(item.geometry.coordinates);
-        return {
-          coords: {
-            x: coords[0],
-            y: coords[1]
-          }
-        }
+        return [coords[0], coords[1]];
       }));
       
       setLines(lines.map(pointPair => [
-        [pointPair[0].coords.x, pointPair[0].coords.y],
-        [pointPair[1].coords.x, pointPair[1].coords.y]
+        [pointPair[0][0], pointPair[0][1]],
+        [pointPair[1][0], pointPair[1][1]]
       ]));
     }
   }, [data]);
