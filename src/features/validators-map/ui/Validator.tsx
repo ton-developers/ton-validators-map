@@ -5,13 +5,14 @@ import styles from "./ValidatorsMap.module.css";
 export interface ValidatorProps {
   mapConverter: MapConverter;
   item: PointFeature<AnyProps> | ClusterFeature<AnyProps>;
+  isMobile?: boolean;
 }
 
-export default function Validator({ mapConverter, item }: ValidatorProps) {
+export default function Validator({ mapConverter, item, isMobile = false }: ValidatorProps) {
   const count = item.properties.point_count || 1;
   const coords = mapConverter.svgCoordsFromGeoCoords(item.geometry.coordinates);
-  const radius = 5 + Math.log(count) * 2;
-  const fontSize = 7 + Math.log(count) / 3;
+  const radius = isMobile ? 10 + Math.log(count) * 3 : 5 + Math.log(count) * 2;
+  const fontSize = isMobile ? 17 + Math.log(count) / 3 : 7 + Math.log(count) / 3;
 
   return (
     <g style={{

@@ -1,3 +1,4 @@
+import { useRef, useEffect, useState } from 'react'
 import { MapConverter } from '@/features/validators-map/utils/MapConverter'
 import { useTonValidators } from '@/features/validators-map/hooks/useTonValidators'
 
@@ -8,15 +9,28 @@ import styles from '../features/validators-map/ui/ValidatorsMap.module.css'
 
 export default function ValidatorsMap() {
   const { data, loading } = useTonValidators();
-  const converter = new MapConverter(1000, 600)
+  const [isMobile, setIsMobile] = useState(false)
+  const converter = isMobile ? new MapConverter(1000, 700) : new MapConverter(1000, 600)
+
+  useEffect(() => {
+    const resizeListener = () => {
+      setIsMobile(window.innerWidth < 1100)
+    }
+    window.addEventListener('resize', resizeListener)
+    return () => {
+      window.removeEventListener('resize', resizeListener)
+    }
+  }, [])
 
   return (
-    <div className={styles.mapContainer}>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="90 70 910 400" className={styles.map}>
-        <WorldShape mapConverter={converter} />
-        <Validators mapConverter={converter} data={data} />
-      </svg>
-      <ValidatorsStats data={data} />
-    </div>
+    <>
+      <div className={styles.mapContainer}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox={isMobile ? "140 70 800 500" : "140 70 800 400"} className={styles.map}>
+          <WorldShape mapConverter={converter} />
+          <Validators mapConverter={converter} data={data} isMobile={isMobile} />
+        </svg>
+        <ValidatorsStats data={data} isMobile={isMobile} />
+      </div>
+    </>
   )
 }

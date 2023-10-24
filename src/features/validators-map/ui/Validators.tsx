@@ -10,15 +10,16 @@ import Validator from "./Validator";
 export interface ValidatorsMapProps {
   mapConverter: MapConverter;
   data: ReturnType<typeof useTonValidators>["data"];
+  isMobile?: boolean;
 }
 
-export default function Validators({ mapConverter, data }: ValidatorsMapProps) {
+export default function Validators({ mapConverter, data, isMobile = false }: ValidatorsMapProps) {
   const [clusters, setClusters] = useState<ReturnType<typeof clusterizeValidators>>([]);
   const [lines, setLines] = useState<Line[]>([]);
 
   useEffect(() => {
     if (data) {
-      const clusters = clusterizeValidators(data, 1);
+      const clusters = clusterizeValidators(data, isMobile ? 0 : 1);
       setClusters(clusters);
       const lines = connectDots(clusters.map(item => {
         const coords = mapConverter.svgCoordsFromGeoCoords(item.geometry.coordinates);
@@ -30,7 +31,7 @@ export default function Validators({ mapConverter, data }: ValidatorsMapProps) {
         [pointPair[1][0], pointPair[1][1]]
       ]));
     }
-  }, [data]);
+  }, [data, isMobile]);
 
   return (
     <>
@@ -52,7 +53,7 @@ export default function Validators({ mapConverter, data }: ValidatorsMapProps) {
       <g id="validators">
         {
           clusters.map((item, index) => (<>
-            <Validator key={`validator-${index}`} mapConverter={mapConverter} item={item} />
+            <Validator key={`validator-${index}`} mapConverter={mapConverter} item={item} isMobile={isMobile} />
           </>))
         }
       </g>
