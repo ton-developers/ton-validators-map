@@ -48,6 +48,8 @@ The response format is:
 ```json
 {
   "count": 123,
+  "countriesCount": 32,
+  "totalStake": 12345670000000000,
   "items": [
     {
       "country": "Country Code, e.g., US",
