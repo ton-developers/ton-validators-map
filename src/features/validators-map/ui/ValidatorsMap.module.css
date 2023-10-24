@@ -1,6 +1,11 @@
+.mapContainer {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
 .map {
   background-color: #2D2D32;
-  border-radius: 3rem;
+  border-radius: 24px;
 }
 
 .continent {

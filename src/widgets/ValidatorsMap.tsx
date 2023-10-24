@@ -11,12 +11,12 @@ export default function ValidatorsMap() {
   const converter = new MapConverter(1000, 600)
 
   return (
-    <>
+    <div className={styles.mapContainer}>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="90 70 910 400" className={styles.map}>
         <WorldShape mapConverter={converter} />
         <Validators mapConverter={converter} data={data} />
       </svg>
       <ValidatorsStats data={data} />
-    </>
+    </div>
   )
 }
