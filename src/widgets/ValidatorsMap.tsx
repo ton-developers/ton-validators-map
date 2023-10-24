@@ -9,12 +9,12 @@ import styles from '../features/validators-map/ui/ValidatorsMap.module.css'
 
 export default function ValidatorsMap() {
   const { data, loading } = useTonValidators();
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState(checkIfMobile())
   const converter = isMobile ? new MapConverter(1000, 700) : new MapConverter(1000, 600)
 
   useEffect(() => {
     const resizeListener = () => {
-      setIsMobile(window.innerWidth < 1100)
+      setIsMobile(checkIfMobile())
     }
     window.addEventListener('resize', resizeListener)
     return () => {
@@ -36,4 +36,8 @@ export default function ValidatorsMap() {
       </div>
     </>
   )
+}
+
+function checkIfMobile() {
+  return window.innerWidth < 1100
 }
