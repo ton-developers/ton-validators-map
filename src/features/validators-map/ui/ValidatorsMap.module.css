@@ -1,3 +1,25 @@
+.mapTitle {
+  color: var(--dark-text-primary, #F3F3F6);
+  text-align: center;
+  /* Desktop/H4/Bold */
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 48px; /* 120% */
+  letter-spacing: -0.088px;
+  max-width: 780px;
+  margin: 0 auto 40px;
+}
+
+.mapTitleMobile {
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px; /* 123.077% */
+  letter-spacing: -0.049px;
+  margin: 0 auto 24px;
+}
+
 .mapContainer {
   max-width: 1080px;
   margin: 0 auto;

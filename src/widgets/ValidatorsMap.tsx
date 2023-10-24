@@ -24,6 +24,9 @@ export default function ValidatorsMap() {
 
   return (
     <>
+      <h1 className={`${styles.mapTitle} ${isMobile ? styles.mapTitleMobile : ''}`}>
+        Validator nodes are distributed all around the world
+      </h1>
       <div className={styles.mapContainer}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox={isMobile ? "140 70 800 500" : "140 70 800 400"} className={styles.map}>
           <WorldShape mapConverter={converter} />
