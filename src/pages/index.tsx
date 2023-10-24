@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+import country from "countryjs";
 import { InferGetServerSidePropsType } from "next";
 import { Card, Container, Map } from "@/components";
 import styles from "../styles/Home.module.css";
@@ -22,6 +23,7 @@ interface Node {
   count: number;
   latitude: number;
   longitude: number;
+  country: string;
 }
 
 function getDistanceFromLatLonInKm(
@@ -57,19 +59,42 @@ export const getServerSideProps = async () => {
   const countries = data?.countriesCount;
   const validators: Record<string, Node> = {};
   const totalStake = data?.totalStake;
-  if (data.items) {
-    data.items.forEach((node) => {
-      if (!node.latitude || !node.longitude) {
+
+  data.items?.forEach((node) => {
+    const { latitude: nodeLat, longitude: nodeLon } = node;
+    if (!nodeLat || !nodeLon || !node.country) {
+      return;
+    }
+
+    let key: string | undefined;
+
+    Object.entries(validators).forEach(([validatorKey, validator]) => {
+      const region = country.region(node.country);
+      const validatorRegion = country.region(validator.country);
+
+      if (region !== validatorRegion) {
         return;
       }
-      validators[`${node.latitude}-${node.longitude}`] = {
-        count:
-          (validators[`${node.latitude}-${node.longitude}`]?.count || 0) + 1,
-        latitude: node.latitude,
-        longitude: node.longitude,
-      };
+
+      if (getDistanceFromLatLonInKm(nodeLat, nodeLon, validator.latitude, validator.longitude) <= 2000) {
+        key = validatorKey;
+      }
     });
-  }
+
+    key = key ?? `${nodeLat}-${nodeLon}`;
+
+    if (!validators[key]) {
+      validators[key] = {
+        count: 0,
+        latitude: nodeLat,
+        longitude: nodeLon,
+        country: node.country,
+      };
+    }
+
+    validators[key].count += 1;
+  });
+
 
   const validatorsValues = Object.values(validators);
   const networks: Array<[[number, number], [number, number]]> = [];
@@ -78,7 +103,7 @@ export const getServerSideProps = async () => {
     const validator1 = validatorsValues[index];
     for (
       let subIndex = index + 1;
-      subIndex < index + 2 && subIndex < validatorsValues.length;
+      subIndex < validatorsValues.length;
       subIndex++
     ) {
       const validator2 = validatorsValues[subIndex];
@@ -87,7 +112,7 @@ export const getServerSideProps = async () => {
 
       const distance = getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2);
 
-      if (distance >= 2000) {
+      if (distance >= 5000 && distance <= 10000) {
         networks.push([
           [lat1, lon1],
           [lat2, lon2],
