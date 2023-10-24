@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import type { useTonValidators } from "@/hooks/useTonValidators";
-import type { MapConverter } from "@/utils/MapConverter";
-import { clusterizeValidators } from "@/utils/clusterizeValidators";
-import { Line, Point, areLinesIntersecting, getLineLength } from "@/utils/lineUtils";
+import type { useTonValidators } from "@/features/validators-map/hooks/useTonValidators";
+import type { MapConverter } from "@/features/validators-map/utils/MapConverter";
+import { clusterizeValidators } from "@/features/validators-map/utils/clusterizeValidators";
+import { Line, Point, areLinesIntersecting, getLineLength } from "@/features/validators-map/utils/lineUtils";
 
 import ValidatorsConnection from "./ValidatorsConnection";
 import Validator from "./Validator";

@@ -1,6 +1,6 @@
-import type { MapConverter } from "@/utils/MapConverter"
-import { useContinents } from '@/hooks/useContinents'
-import styles from '@/styles/ValidatorsMap.module.css'
+import type { MapConverter } from "../utils/MapConverter"
+import { useContinents } from '../hooks/useContinents'
+import styles from './ValidatorsMap.module.css'
 
 export interface WorldShapeProps {
   mapConverter: MapConverter

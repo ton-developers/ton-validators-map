@@ -1,5 +1,5 @@
-import { Line, getLineMidpoint, getPerpendicularVector, addVectors, getLineLength } from "@/utils/lineUtils";
-import styles from "@/styles/ValidatorsMap.module.css";
+import { Line, getLineMidpoint, getPerpendicularVector, addVectors, getLineLength } from "../utils/lineUtils";
+import styles from "./ValidatorsMap.module.css";
 
 export interface ValidatorsConnectionProps {
   line: Line;

@@ -1,6 +1,6 @@
-import type { MapConverter } from "@/utils/MapConverter";
+import type { MapConverter } from "../utils/MapConverter";
 import type { PointFeature, ClusterFeature, AnyProps } from "supercluster";
-import styles from "@/styles/ValidatorsMap.module.css";
+import styles from "./ValidatorsMap.module.css";
 
 export interface ValidatorProps {
   mapConverter: MapConverter;

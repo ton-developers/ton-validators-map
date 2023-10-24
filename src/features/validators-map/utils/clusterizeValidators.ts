@@ -1,6 +1,6 @@
 
 import Supercluster from 'supercluster'
-import type { TonValidatorsCollection } from "@/hooks/useTonValidators";
+import type { TonValidatorsCollection } from "@/features/validators-map/hooks/useTonValidators";
 import type { Feature, Point } from "geojson";
 
 export function clusterizeValidators(data: TonValidatorsCollection, zoom: number) {

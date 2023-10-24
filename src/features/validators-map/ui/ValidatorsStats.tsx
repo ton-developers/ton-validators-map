@@ -1,4 +1,4 @@
-import type { useTonValidators } from '@/hooks/useTonValidators'
+import type { useTonValidators } from '@/features/validators-map/hooks/useTonValidators'
 
 export interface ValidatorsStatsProps {
   data: ReturnType<typeof useTonValidators>["data"];
