@@ -24,9 +24,10 @@ interface Node {
   latitude: number;
   longitude: number;
   country: string;
+  region: string,
 }
 
-function getDistanceFromLatLonInKm(
+function getDistance(
   lat1: number,
   lon1: number,
   lat2: number,
@@ -67,16 +68,16 @@ export const getServerSideProps = async () => {
     }
 
     let key: string | undefined;
+    const region = country.region(node.country);
 
     Object.entries(validators).forEach(([validatorKey, validator]) => {
-      const region = country.region(node.country);
       const validatorRegion = country.region(validator.country);
 
       if (region !== validatorRegion) {
         return;
       }
 
-      if (getDistanceFromLatLonInKm(nodeLat, nodeLon, validator.latitude, validator.longitude) <= 2000) {
+      if (getDistance(nodeLat, nodeLon, validator.latitude, validator.longitude) <= 2000) {
         key = validatorKey;
       }
     });
@@ -89,6 +90,7 @@ export const getServerSideProps = async () => {
         latitude: nodeLat,
         longitude: nodeLon,
         country: node.country,
+        region,
       };
     }
 
@@ -98,21 +100,57 @@ export const getServerSideProps = async () => {
 
   const validatorsValues = Object.values(validators);
   const networks: Array<[[number, number], [number, number]]> = [];
+  const validatorsByRegion: Record<string, Node[]> = {}
 
-  for (let index = 0; index < validatorsValues.length - 1; index++) {
-    const validator1 = validatorsValues[index];
+  validatorsValues.forEach((item) => {
+    if (!validatorsByRegion[item.region])  {
+      validatorsByRegion[item.region] = []
+    }
+
+    validatorsByRegion[item.region].push(item)
+  })
+
+  const maxNodes: Node[] = [];
+
+  Object.values(validatorsByRegion).forEach((list) => {
+    let maxNode = list[0];
+    
+    list.forEach((item) => {
+      if (item.count > maxNode.count) {
+        maxNode = item;
+      }
+    })
+
+    maxNodes.push(maxNode);
+
+    list.forEach((item) => {
+      if (item === maxNode) {
+        return;
+      }
+
+      networks.push([
+        [maxNode.latitude, maxNode.longitude],
+        [item.latitude, item.longitude],
+      ]);
+    })
+  })
+
+  console.log(maxNodes);
+
+  for (let index = 0; index < maxNodes.length - 1; index++) {
+    const validator1 = maxNodes[index];
     for (
       let subIndex = index + 1;
-      subIndex < index + 2 && subIndex < validatorsValues.length;
+      subIndex < maxNodes.length;
       subIndex++
     ) {
-      const validator2 = validatorsValues[subIndex];
+      const validator2 = maxNodes[subIndex];
       const { latitude: lat1, longitude: lon1 } = validator1;
       const { latitude: lat2, longitude: lon2 } = validator2;
 
-      const distance = getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2);
+      const distance = getDistance(lat1, lon1, lat2, lon2);
 
-      if (distance >= 5000) {
+      if (distance <= 10000) {
         networks.push([
           [lat1, lon1],
           [lat2, lon2],
@@ -123,7 +161,7 @@ export const getServerSideProps = async () => {
 
   return {
     props: {
-      validators: Object.values(validators),
+      validators: validatorsValues,
       networks,
       totalStake,
       count,
