@@ -19,7 +19,7 @@ export default function Validators({ mapConverter, data, isMobile = false }: Val
 
   useEffect(() => {
     if (data) {
-      const clusters = clusterizeValidators(data, isMobile ? 0 : 1);
+      const clusters = clusterizeValidators(data, 1);
       setClusters(clusters);
       const lines = connectDots(clusters.map(item => {
         const coords = mapConverter.svgCoordsFromGeoCoords(item.geometry.coordinates);
