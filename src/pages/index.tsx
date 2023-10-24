@@ -103,7 +103,7 @@ export const getServerSideProps = async () => {
     const validator1 = validatorsValues[index];
     for (
       let subIndex = index + 1;
-      subIndex < validatorsValues.length;
+      subIndex < index + 2 && subIndex < validatorsValues.length;
       subIndex++
     ) {
       const validator2 = validatorsValues[subIndex];
@@ -112,7 +112,7 @@ export const getServerSideProps = async () => {
 
       const distance = getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2);
 
-      if (distance >= 5000 && distance <= 10000) {
+      if (distance >= 5000) {
         networks.push([
           [lat1, lon1],
           [lat2, lon2],
