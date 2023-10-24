@@ -31,7 +31,7 @@
 }
 
 .continent {
-  fill: #7e7e7e;
+  fill: rgba(255, 255, 255, 0.10);
 }
 
 .validatorDot {
