@@ -61,19 +61,16 @@
   stroke-linecap: round;
   fill: none;
   stroke-dasharray: 1000;
-  stroke-dashoffset: 1000;
+  stroke-dashoffset: 0;
   animation: dash 20s linear var(--animation-delay, 0s) forwards infinite;
 }
 
 @keyframes dash {
-  15% {
-    stroke-dashoffset: 0;
+  15%, 30% {
+    stroke-dashoffset: 1000;
   }
-  85% {
+  45%, 100% {
     stroke-dashoffset: 0;
-  }
-  to {
-    stroke-dashoffset: -1000;
   }
 }
 
