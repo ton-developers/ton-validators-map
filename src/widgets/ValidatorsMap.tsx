@@ -9,10 +9,11 @@ import styles from '../features/validators-map/ui/ValidatorsMap.module.css'
 
 export default function ValidatorsMap() {
   const { data, loading } = useTonValidators();
-  const [isMobile, setIsMobile] = useState(checkIfMobile())
+  const [isMobile, setIsMobile] = useState(false)
   const converter = isMobile ? new MapConverter(1000, 700) : new MapConverter(1000, 600)
 
   useEffect(() => {
+    setIsMobile(checkIfMobile())
     const resizeListener = () => {
       setIsMobile(checkIfMobile())
     }
