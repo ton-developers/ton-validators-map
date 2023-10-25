@@ -60,16 +60,38 @@ export function getDistanceBetweenLineAndPoint(line: Line, point: Point): number
   return Math.abs((x2 - x1) * (y1 - y0) - (x1 - x0) * (y2 - y1)) / Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 }
 
-export function getDistanceBetweenLines(line1: Line, line2: Line): number {
-  const points = [
-    ...line1, ...line2, 
-    getLineMidpoint(line1), 
-    getLineMidpoint(line2)
+export function getDistanceBetweenPoints(p1: Point, p2: Point): number {
+  const [x1, y1] = p1
+  const [x2, y2] = p2
+
+  return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+}
+
+export function getLineAngle(line: Line) {
+  const [p1, p2] = line
+  const dx = p2[0] - p1[0]
+  const dy = p2[1] - p1[1]
+  return Math.abs(Math.atan(dy / dx))
+}
+
+export function areLinesClose(line1: Line, line2: Line): boolean {
+  const line1Angle = getLineAngle(line1)
+  const line2Angle = getLineAngle(line2)
+
+  if (Math.abs(line1Angle - line2Angle) > Math.PI / 10) {
+    return false
+  }
+
+  const distances = [
+    getDistanceBetweenLineAndPoint(line1, line2[0]),
+    getDistanceBetweenLineAndPoint(line1, line2[1]),
+    getDistanceBetweenLineAndPoint(line2, line1[0]),
+    getDistanceBetweenLineAndPoint(line2, line1[1]),
   ]
 
-  const distances = points
-    .flatMap(point => [getDistanceBetweenLineAndPoint(line1, point), getDistanceBetweenLineAndPoint(line2, point)])
-    .filter(d => d > 1)
+  if (Math.max(...distances) > 5) {
+    return false
+  }
 
-  return Math.min(...distances)
+  return true
 }

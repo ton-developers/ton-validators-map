@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import type { useTonValidators } from "@/features/validators-map/hooks/useTonValidators";
 import type { MapConverter } from "@/features/validators-map/utils/MapConverter";
 import { clusterizeValidators } from "@/features/validators-map/utils/clusterizeValidators";
-import { Line, Point, areLinesIntersecting, getLineLength, getDistanceBetweenLines } from "@/features/validators-map/utils/lineUtils";
+import { Line, Point, areLinesIntersecting, getLineLength, areLinesClose } from "@/features/validators-map/utils/lineUtils";
 
 import ValidatorsConnection from "./ValidatorsConnection";
 import Validator from "./Validator";
@@ -98,8 +98,7 @@ function connectDots(points: Point[]) {
       }
       const lineJLength = getLineLength(lines[j])
       const lineILength = getLineLength(lines[i])
-      const distance = getDistanceBetweenLines(lines[i], lines[j])
-      if (distance < Math.min(lineILength, lineJLength) / 50) {
+      if (areLinesClose(lines[i], lines[j])) {
         if (lineILength > lineJLength) {
           linesToRemove.push(i)
         } else {
@@ -108,6 +107,7 @@ function connectDots(points: Point[]) {
       }
     }
   }
+  
   return lines.filter((_, i) => !linesToRemove.includes(i))
 }
 
