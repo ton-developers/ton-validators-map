@@ -10,10 +10,10 @@ import Validator from "./Validator";
 export interface ValidatorsMapProps {
   mapConverter: MapConverter;
   data: ReturnType<typeof useTonValidators>["data"];
-  isMobile?: boolean;
+  screenSizeMode?: "sm" | "md" | "lg";
 }
 
-export default function Validators({ mapConverter, data, isMobile = false }: ValidatorsMapProps) {
+export default function Validators({ mapConverter, data, screenSizeMode = 'lg' }: ValidatorsMapProps) {
   const [clusters, setClusters] = useState<ReturnType<typeof clusterizeValidators>>([]);
   const [lines, setLines] = useState<Line[]>([]);
 
@@ -31,7 +31,7 @@ export default function Validators({ mapConverter, data, isMobile = false }: Val
         [pointPair[1][0], pointPair[1][1]]
       ]));
     }
-  }, [data, isMobile]);
+  }, [data]);
 
   return (
     <>
@@ -53,7 +53,7 @@ export default function Validators({ mapConverter, data, isMobile = false }: Val
       <g id="validators">
         {
           clusters.map((item, index) => (<>
-            <Validator key={`validator-${index}`} mapConverter={mapConverter} item={item} isMobile={isMobile} />
+            <Validator key={`validator-${index}`} mapConverter={mapConverter} item={item} />
           </>))
         }
       </g>

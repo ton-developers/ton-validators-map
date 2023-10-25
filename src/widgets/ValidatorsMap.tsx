@@ -7,15 +7,17 @@ import Validators from '../features/validators-map/ui/Validators'
 import ValidatorsStats from '../features/validators-map/ui/ValidatorsStats'
 import styles from '../features/validators-map/ui/ValidatorsMap.module.css'
 
+type ScreenSizeMode = 'sm' | 'md' | 'lg'
+
 export default function ValidatorsMap() {
   const { data, loading } = useTonValidators();
-  const [isMobile, setIsMobile] = useState(false)
+  const [screenSizeMode, setScreenSizeMode] = useState<ScreenSizeMode>('lg')
   const converter = new MapConverter(930, 900)
 
   useEffect(() => {
-    setIsMobile(checkIfMobile())
+    setScreenSizeMode(getScreenSizeMode())
     const resizeListener = () => {
-      setIsMobile(checkIfMobile())
+      setScreenSizeMode(getScreenSizeMode())
     }
     window.addEventListener('resize', resizeListener)
     return () => {
@@ -25,13 +27,13 @@ export default function ValidatorsMap() {
 
   return (
     <>
-      <h1 className={`${styles.mapTitle} ${isMobile ? styles.mapTitleMobile : ''}`}>
+      <h1 className={styles.mapTitle}>
         Validator nodes are distributed all around the world
       </h1>
       <div className={styles.mapContainer}>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox={isMobile ? "120 150 765.625 500" : "120 200 753 400"} className={styles.map}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox={screenSizeMode === 'sm' ? "120 150 765.625 500" : "120 200 753 400"} className={styles.map}>
           <WorldShape mapConverter={converter} />
-          <Validators mapConverter={converter} data={data} />
+          <Validators mapConverter={converter} data={data} screenSizeMode={screenSizeMode} />
         </svg>
         <ValidatorsStats data={data} />
       </div>
@@ -39,6 +41,13 @@ export default function ValidatorsMap() {
   )
 }
 
-function checkIfMobile() {
-  return window.innerWidth < 1100
+function getScreenSizeMode(): ScreenSizeMode {
+  const width: number = window.innerWidth
+  if (width < 600) {
+    return 'sm'
+  } else if (width < 1220) {
+    return 'md'
+  } else {
+    return 'lg'
+  }
 }
