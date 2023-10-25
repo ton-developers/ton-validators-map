@@ -31,6 +31,12 @@ export default function Validator({ mapConverter, item }: ValidatorProps) {
         cx={coords[0]}
         cy={coords[1]}
         transform-origin={`${coords[0]} ${coords[1]}`}
+        className={styles.validatorDotPulseInitial}
+      />
+      <circle
+        cx={coords[0]}
+        cy={coords[1]}
+        transform-origin={`${coords[0]} ${coords[1]}`}
         className={styles.validatorDotPulse}
       />
       <circle

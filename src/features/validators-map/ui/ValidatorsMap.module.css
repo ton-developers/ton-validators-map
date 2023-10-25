@@ -63,8 +63,20 @@
   fill: #34BCFF;
   opacity: var(--active-opacity);
   r: calc(var(--validator-dot-radius) * 2);
-  transform: scale(0);
+  transform: scale(var(--off-scale));
   animation: pulse 20s linear var(--animation-delay, 0s) forwards infinite;
+}
+
+.validatorDotPulseInitial {
+  --active-opacity: 0.7;
+  --active-scale: 1;
+  --off-opacity: 0;
+  --off-scale: 0.4;
+  fill: #34BCFF;
+  opacity: var(--active-opacity);
+  r: calc(var(--validator-dot-radius) * 2);
+  transform: scale(var(--off-scale));
+  animation: pulse-initial 3s ease-out forwards;
 }
 
 .validatorText {
@@ -81,7 +93,7 @@
   fill: none;
   stroke-dasharray: 1000;
   stroke-dashoffset: 0;
-  animation: dash 20s linear var(--animation-delay, 0s) forwards infinite;
+  animation: dash 20s ease-in-out var(--animation-delay, 0s) forwards infinite;
   opacity: .4;
 }
 
@@ -103,6 +115,17 @@
     opacity: var(--active-opacity);
   }
   80%, 90%, 100% {
+    transform: scale(var(--active-scale));
+    opacity: var(--off-opacity);
+  }
+}
+
+@keyframes pulse-initial {
+  0%, 100% {
+    transform: scale(var(--off-scale));
+    opacity: var(--active-opacity);
+  }
+  99.99999% {
     transform: scale(var(--active-scale));
     opacity: var(--off-opacity);
   }
