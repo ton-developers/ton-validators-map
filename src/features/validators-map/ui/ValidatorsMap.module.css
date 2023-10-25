@@ -76,12 +76,13 @@
 
 .validatorsLink {
   stroke: url(#connection-linear-gradient);
-  stroke-width: 1px;
+  stroke-width: 1.5px;
   stroke-linecap: round;
   fill: none;
   stroke-dasharray: 1000;
   stroke-dashoffset: 0;
   animation: dash 20s linear var(--animation-delay, 0s) forwards infinite;
+  opacity: .4;
 }
 
 @keyframes dash {
@@ -123,6 +124,10 @@
   .validator5Digits {
     --validator-text-font-size: 15px;
   }
+
+  .validatorsLink {
+    stroke-width: 2px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -149,5 +154,9 @@
   }
   .validator5Digits {
     --validator-text-font-size: 22.5px;
+  }
+
+  .validatorsLink {
+    stroke-width: 2.5px;
   }
 }

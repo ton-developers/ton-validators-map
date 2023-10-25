@@ -7,7 +7,7 @@ export interface ValidatorsConnectionProps {
 
 export default function ValidatorsConnection({ line }: ValidatorsConnectionProps) {
   let middlePoint = getLineMidpoint(line);
-  const middleDelta = getPerpendicularVector(line, 5 + Math.log(getLineLength(line)));
+  const middleDelta = getPerpendicularVector(line, 5 + (getLineLength(line) / 30) ** 1.5 );
   middlePoint = addVectors(middlePoint, middleDelta);
   return (
     <>

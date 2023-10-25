@@ -48,8 +48,8 @@ export default function Validators({ mapConverter, data, screenSizeMode = 'lg' }
           <linearGradient 
             id="connection-linear-gradient"
             gradientTransform="rotate(145 .5 .5)">
-              <stop offset="0" stopColor="#FFF" />
-              <stop offset="1" stopColor="#FFF" stopOpacity={0.05} />
+              <stop offset="0" stopColor="#FFF" stopOpacity="0.1" />
+              <stop offset="1" stopColor="#FFF" />
           </linearGradient>
         </defs>
         {
