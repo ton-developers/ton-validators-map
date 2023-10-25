@@ -10,7 +10,7 @@ import styles from '../features/validators-map/ui/ValidatorsMap.module.css'
 export default function ValidatorsMap() {
   const { data, loading } = useTonValidators();
   const [isMobile, setIsMobile] = useState(false)
-  const converter = new MapConverter(1000, 600)
+  const converter = new MapConverter(930, 900)
 
   useEffect(() => {
     setIsMobile(checkIfMobile())
@@ -29,9 +29,9 @@ export default function ValidatorsMap() {
         Validator nodes are distributed all around the world
       </h1>
       <div className={styles.mapContainer}>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox={isMobile ? "140 20 800 480" : "140 70 800 400"} className={styles.map}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox={isMobile ? "120 150 765.625 500" : "120 200 753 400"} className={styles.map}>
           <WorldShape mapConverter={converter} />
-          <Validators mapConverter={converter} data={data} isMobile={isMobile} />
+          <Validators mapConverter={converter} data={data} />
         </svg>
         <ValidatorsStats data={data} />
       </div>
