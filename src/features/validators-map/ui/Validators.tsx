@@ -54,7 +54,7 @@ export default function Validators({ mapConverter, data, screenSizeMode = 'lg' }
         </defs>
         {
           lines.map((pointPair, index) => (<>
-            <ValidatorsConnection key={`line-${index}`} line={pointPair} />
+            <ValidatorsConnection key={`line-${index}`} line={pointPair} mapConverter={mapConverter} />
           </>))
         }
       </g>

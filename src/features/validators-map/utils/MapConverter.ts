@@ -37,14 +37,32 @@ export class MapConverter {
     return [this.roundTo(x), this.roundTo(y)];
   }
 
-  private y2lat(y: number) { return (2 * Math.atan( Math.exp(y / R)) - PI/2 ) * RAD2DEG }
-  private x2lon(x: number) { return RAD2DEG * (x/R); }
+  public y2lat(y: number) {
+    const intY = this.unfitFromMapHeight(y);
+    return (2 * Math.atan( Math.exp(intY / R)) - PI/2 ) * RAD2DEG 
+  }
+  public x2lon(x: number) { 
+    const intX = this.unfitFromMapWidth(x);
+    return RAD2DEG * (intX/R); 
+  }
 
-  private lat2y(lat: number) { return Math.log(Math.tan(PI/4 + lat * DEG2RAD / 2)) * R}
-  private lon2x(lon: number) { return lon * DEG2RAD * R; }
+  public lat2y(lat: number) { 
+    return Math.log(Math.tan(PI/4 + lat * DEG2RAD / 2)) * R
+  }
+  public lon2x(lon: number) { 
+    return lon * DEG2RAD * R; 
+  }
 
   private fitToMapWidth(x: number): number {
     return (x - this.minCalculatedX) / this.calculatedXRange * this.mapWidth;
+  }
+
+  private unfitFromMapWidth(x: number): number {
+    return x / this.mapWidth * this.calculatedXRange + this.minCalculatedX;
+  }
+
+  private unfitFromMapHeight(y: number): number {
+    return y / this.mapHeight * this.calculatedYRange + this.minCalculatedY;
   }
 
   private fitToMapHeight(y: number): number {
