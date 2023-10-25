@@ -45,7 +45,7 @@ function getScreenSizeMode(): ScreenSizeMode {
   const width: number = window.innerWidth
   if (width < 600) {
     return 'sm'
-  } else if (width < 1220) {
+  } else if (width < 860) {
     return 'md'
   } else {
     return 'lg'

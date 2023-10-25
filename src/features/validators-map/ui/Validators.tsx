@@ -7,19 +7,27 @@ import { Line, Point, areLinesIntersecting, getLineLength } from "@/features/val
 import ValidatorsConnection from "./ValidatorsConnection";
 import Validator from "./Validator";
 
+type ScreenSizeMode = 'sm' | 'md' | 'lg'
+
 export interface ValidatorsMapProps {
   mapConverter: MapConverter;
   data: ReturnType<typeof useTonValidators>["data"];
-  screenSizeMode?: "sm" | "md" | "lg";
+  screenSizeMode?: ScreenSizeMode;
 }
 
 export default function Validators({ mapConverter, data, screenSizeMode = 'lg' }: ValidatorsMapProps) {
   const [clusters, setClusters] = useState<ReturnType<typeof clusterizeValidators>>([]);
   const [lines, setLines] = useState<Line[]>([]);
 
+  const screenSizeModeToZoom: Record<ScreenSizeMode, number> = {
+    sm: 0,
+    md: 1,
+    lg: 2,
+  }
+
   useEffect(() => {
     if (data) {
-      const clusters = clusterizeValidators(data, 1);
+      const clusters = clusterizeValidators(data, screenSizeModeToZoom[screenSizeMode]);
       setClusters(clusters);
       const lines = connectDots(clusters.map(item => {
         const coords = mapConverter.svgCoordsFromGeoCoords(item.geometry.coordinates);
@@ -31,7 +39,7 @@ export default function Validators({ mapConverter, data, screenSizeMode = 'lg' }
         [pointPair[1][0], pointPair[1][1]]
       ]));
     }
-  }, [data]);
+  }, [data, screenSizeMode]);
 
   return (
     <>
