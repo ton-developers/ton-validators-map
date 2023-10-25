@@ -20,7 +20,7 @@ export default function Validators({ mapConverter, data, screenSizeMode = 'lg' }
   const [lines, setLines] = useState<Line[]>([]);
 
   const screenSizeModeToZoom: Record<ScreenSizeMode, number> = {
-    sm: 0,
+    sm: 1,
     md: 1,
     lg: 2,
   }
