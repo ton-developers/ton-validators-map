@@ -52,3 +52,24 @@ export function addVectors(v1: Vector, v2: Vector): Vector {
 export function reverseVector(vector: Vector): Vector {
   return [-vector[0], -vector[1]]
 }
+
+export function getDistanceBetweenLineAndPoint(line: Line, point: Point): number {
+  const [[x1, y1], [x2, y2]] = line
+  const [x0, y0] = point
+
+  return Math.abs((x2 - x1) * (y1 - y0) - (x1 - x0) * (y2 - y1)) / Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+}
+
+export function getDistanceBetweenLines(line1: Line, line2: Line): number {
+  const points = [
+    ...line1, ...line2, 
+    getLineMidpoint(line1), 
+    getLineMidpoint(line2)
+  ]
+
+  const distances = points
+    .flatMap(point => [getDistanceBetweenLineAndPoint(line1, point), getDistanceBetweenLineAndPoint(line2, point)])
+    .filter(d => d > 1)
+
+  return Math.min(...distances)
+}

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import type { useTonValidators } from "@/features/validators-map/hooks/useTonValidators";
 import type { MapConverter } from "@/features/validators-map/utils/MapConverter";
 import { clusterizeValidators } from "@/features/validators-map/utils/clusterizeValidators";
-import { Line, Point, areLinesIntersecting, getLineLength } from "@/features/validators-map/utils/lineUtils";
+import { Line, Point, areLinesIntersecting, getLineLength, getDistanceBetweenLines } from "@/features/validators-map/utils/lineUtils";
 
 import ValidatorsConnection from "./ValidatorsConnection";
 import Validator from "./Validator";
@@ -70,8 +70,8 @@ export default function Validators({ mapConverter, data, screenSizeMode = 'lg' }
 }
 
 function connectDots(points: Point[]) {
-  const lines = connectAllToAll(points)
-  const linesToRemove: number[] = []
+  let lines = connectAllToAll(points)
+  let linesToRemove: number[] = []
   for (let i = 0; i < lines.length - 1; i++) {
     for (let j = i + 1; j < lines.length; j++) {
       if (linesToRemove.includes(j) || linesToRemove.includes(i)) {
@@ -79,6 +79,28 @@ function connectDots(points: Point[]) {
       }
       if (areLinesIntersecting(lines[i], lines[j])) {
         if (getLineLength(lines[i]) > getLineLength(lines[j])) {
+          linesToRemove.push(i)
+        } else {
+          linesToRemove.push(j)
+        }
+      }
+
+    }
+  }
+
+  lines = lines.filter((_, i) => !linesToRemove.includes(i))
+  linesToRemove = []
+
+  for (let i = 0; i < lines.length - 1; i++) {
+    for (let j = i + 1; j < lines.length; j++) {
+      if (linesToRemove.includes(j) || linesToRemove.includes(i)) {
+        continue
+      }
+      const lineJLength = getLineLength(lines[j])
+      const lineILength = getLineLength(lines[i])
+      const distance = getDistanceBetweenLines(lines[i], lines[j])
+      if (distance < Math.min(lineILength, lineJLength) / 50) {
+        if (lineILength > lineJLength) {
           linesToRemove.push(i)
         } else {
           linesToRemove.push(j)
