@@ -27,6 +27,11 @@ function calculatePath(start: Point, end: Point) {
   `;
 }
 
+// function calculatePath(start: Point, end: Point) {
+//   const a = start;
+
+// }
+
 const MAP_WIDTH = 1180;
 const MAP_HEIGHT = 760;
 
@@ -139,7 +144,7 @@ export const Map: React.FC<SVGProps> = ({
       />
 
       <g transform="translate(-110, 140)">
-        {networks.map((item) => {
+        {networks.map((item, index) => {
           const [point1, point2] = item;
           const [lat1, lon1] = point1;
           const [lat2, lon2] = point2;
@@ -149,13 +154,24 @@ export const Map: React.FC<SVGProps> = ({
           const x2 = getXByLong(lon2);
           const y2 = getYByLong(lat2);
           return (
-            <path
+            <><path
               key={`${lat1}-${lon1}-${lat2}-${lon2}`}
               d={calculatePath({ x: x1, y: y1 }, { x: x2, y: y2 })}
               fill="transparent"
-              stroke="gray"
-              strokeWidth={2}
-            />
+              stroke={`url(#lineGradient${index}`}
+              strokeWidth={2}>
+            </path>
+            <defs>
+                <linearGradient id={`lineGradient${index}`}>
+                  <stop offset="0%" stop-color="white" stop-opacity="0">
+                    <animate attributeName="stop-opacity" values="0; 1; 0; 1; 0; 0" dur={`${y2 * 25}ms`} repeatCount="indefinite"></animate>
+                  </stop>
+
+                  <stop offset="100%" stop-color="white" stop-opacity="1">
+                    <animate attributeName="stop-opacity" values="1; 0; 1; 0; 1; 1" dur={`${y2 * 25}ms`} repeatCount="indefinite"></animate>
+                  </stop>
+                </linearGradient>
+              </defs></>
           );
         })}
         {nodes.map(({ count, latitude, longitude }) => {
