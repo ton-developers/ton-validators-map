@@ -3,13 +3,13 @@ import styles from './ValidatorsStats.module.css';
 
 export interface ValidatorsStatsProps {
   data: ReturnType<typeof useTonValidators>["data"];
-  isMobile?: boolean;
 }
 
-export default function ValidatorsStats({ data, isMobile = false }: ValidatorsStatsProps) {
+export default function ValidatorsStats({ data }: ValidatorsStatsProps) {
   if (!data) return null;
 
-  const tonString = isMobile ? formatNumberInHigherUnits(toTON(data.totalStake)) + '+' : formatBigNumber(toTON(data.totalStake));
+  const tonString = formatBigNumber(toTON(data.totalStake));
+  const tonStringSmall = formatNumberInHigherUnits(toTON(data.totalStake));
 
   const cards = [
     { value: `${tonString} TON`, label: 'Total stake' },
@@ -19,15 +19,22 @@ export default function ValidatorsStats({ data, isMobile = false }: ValidatorsSt
 
   return (
     <>
-      <div className={`${styles.statsCardsContainer} ${isMobile ? styles.statsCardsContainerMobile : ''}`}>
-        {
-          cards.map((card, index) => (
-            <div key={`card-${index}`} className={`${styles.statsCard} ${isMobile ? styles.statsCardMobile : ''}`}>
-              <div className={`${styles.statsCard__value} ${isMobile ? styles.statsCardMobile__value : ''}`}>{card.value}</div>
-              <div className={`${styles.statsCard__label} ${isMobile ? styles.statsCardMobile__label : ''}`}>{card.label}</div>
-            </div>
-          ))
-        }
+      <div className={styles.statsCardsContainer}>
+        <div key="total-stake" className={styles.statsCard}>
+          <div className={styles.statsCard__value}>
+            <span className={styles.statsCard__value__big}>{tonString} TON</span>
+            <span className={styles.statsCard__value__small}>{tonStringSmall}+ TON</span>
+          </div>
+          <div className={styles.statsCard__label}>Total stake</div>
+        </div>
+        <div key="nodes" className={styles.statsCard}>
+          <div className={styles.statsCard__value}>{data.count}+</div>
+          <div className={styles.statsCard__label}>Nodes</div>
+        </div>
+        <div key="countries" className={styles.statsCard}>
+          <div className={styles.statsCard__value}>{data.countriesCount}+</div>
+          <div className={styles.statsCard__label}>Countries</div>
+        </div>
       </div>
     </>
   )

@@ -33,7 +33,7 @@ export default function ValidatorsMap() {
           <WorldShape mapConverter={converter} />
           <Validators mapConverter={converter} data={data} isMobile={isMobile} />
         </svg>
-        <ValidatorsStats data={data} isMobile={isMobile} />
+        <ValidatorsStats data={data} />
       </div>
     </>
   )
