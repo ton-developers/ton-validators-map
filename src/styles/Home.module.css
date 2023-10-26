@@ -43,7 +43,7 @@
   font-size: 40px;
   font-style: normal;
   font-weight: 700;
-  line-height: 48px; /* 120% */
+  line-height: 48px;
   letter-spacing: -0.088px;
 }
 
@@ -57,6 +57,7 @@
     width: 100%;
     gap: 16px;
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
   }
 
   .cards > div {
@@ -73,19 +74,18 @@
   }
 
   .cards::after {
-    content:'';
-    width:100%;
-    order:0;
+    content: "";
+    width: 100%;
+    order: 0;
   }
 
   .title {
-    /* Mobile/H4/Bold */
     width: 100%;
-    max-width: 640px;;
+    max-width: 640px;
     font-size: 26px;
     font-style: normal;
     font-weight: 700;
-    line-height: 32px; /* 123.077% */
+    line-height: 32px;
     letter-spacing: -0.049px;
   }
 }

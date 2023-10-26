@@ -27,11 +27,6 @@ function calculatePath(start: Point, end: Point) {
   `;
 }
 
-// function calculatePath(start: Point, end: Point) {
-//   const a = start;
-
-// }
-
 const MAP_WIDTH = 1180;
 const MAP_HEIGHT = 760;
 
@@ -163,18 +158,18 @@ export const Map: React.FC<SVGProps> = ({
               ></path>
               <defs>
                 <linearGradient id={`lineGradient${index}`}>
-                  <stop offset="0%" stop-color="white" stop-opacity="0">
+                  <stop offset="0%" stopColor="white" stopOpacity="0">
                     <animate
-                      attributeName="stop-opacity"
+                      attributeName="stopOpacity"
                       values="0; 1; 0; 1; 0; 0"
                       dur={`${y2 * 25}ms`}
                       repeatCount="indefinite"
                     ></animate>
                   </stop>
 
-                  <stop offset="100%" stop-color="white" stop-opacity="1">
+                  <stop offset="100%" stopColor="white" stopOpacity="1">
                     <animate
-                      attributeName="stop-opacity"
+                      attributeName="stopOpacity"
                       values="1; 0; 1; 0; 1; 1"
                       dur={`${y2 * 25}ms`}
                       repeatCount="indefinite"

@@ -8,19 +8,19 @@
 }
 
 .value {
-  color: var(--text-primary, #F3F3F6);
+  color: var(--text-primary, #f3f3f6);
   font-size: 32px;
   font-style: normal;
   font-weight: 600;
-  line-height: 40px; /* 125% */
+  line-height: 40px; 
 }
 
 .title {
-  color: var(--text-tertiary, #ACACAF);
+  color: var(--text-tertiary, #acacaf);
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
-  line-height: 28px; /* 155.556% */
+  line-height: 28px; 
   letter-spacing: -0.025px;
 }
 
@@ -29,19 +29,17 @@
     font-size: 22px;
     font-style: normal;
     font-weight: 600;
-    line-height: 28px; /* 127.273% */
+    line-height: 28px; 
     letter-spacing: -0.031px;
   }
 
   .title {
     font-variant-numeric: lining-nums tabular-nums;
-
-    /* Mobile/Body 2/Regular */
     font-family: Inter;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
-    line-height: 20px; /* 142.857% */
+    line-height: 20px; 
     letter-spacing: -0.008px;
   }
 }

@@ -1,19 +1,19 @@
-import { FC, ReactNode } from "react"
+import { FC, ReactNode } from "react";
 import classnames from "classnames";
-import styles from './styles.module.css'
+import styles from "./styles.module.css";
 
 interface Props {
   children: ReactNode;
   backgroundColor?: string;
-  withPaddings?: boolean,
-  className?: string,
+  withPaddings?: boolean;
+  className?: string;
 }
 
 export const Container: FC<Props> = function Container({
   children,
-  backgroundColor = '#2D2D32',
+  backgroundColor = "#2D2D32",
   className,
-}){
+}) {
   return (
     <div
       className={classnames(styles.container, className)}
@@ -23,5 +23,5 @@ export const Container: FC<Props> = function Container({
     >
       {children}
     </div>
-  )
-}
+  );
+};

@@ -24,17 +24,12 @@ interface Node {
   latitude: number;
   longitude: number;
   country: string;
-  region: string,
+  region: string;
 }
 
-function getDistance(
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number
-) {
-  var R = 6371; // Radius of the earth in km
-  var dLat = deg2rad(lat2 - lat1); // deg2rad below
+function getDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
+  var R = 6371;
+  var dLat = deg2rad(lat2 - lat1);
   var dLon = deg2rad(lon2 - lon1);
   var a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -43,7 +38,7 @@ function getDistance(
       Math.sin(dLon / 2) *
       Math.sin(dLon / 2);
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  var d = R * c; // Distance in km
+  var d = R * c;
   return d;
 }
 
@@ -77,7 +72,14 @@ export const getServerSideProps = async () => {
         return;
       }
 
-      if (getDistance(nodeLat, nodeLon, validator.latitude, validator.longitude) <= 2000) {
+      if (
+        getDistance(
+          nodeLat,
+          nodeLon,
+          validator.latitude,
+          validator.longitude
+        ) <= 2000
+      ) {
         key = validatorKey;
       }
     });
@@ -97,29 +99,28 @@ export const getServerSideProps = async () => {
     validators[key].count += 1;
   });
 
-
   const validatorsValues = Object.values(validators);
   const networks: Array<[[number, number], [number, number]]> = [];
-  const validatorsByRegion: Record<string, Node[]> = {}
+  const validatorsByRegion: Record<string, Node[]> = {};
 
   validatorsValues.forEach((item) => {
-    if (!validatorsByRegion[item.region])  {
-      validatorsByRegion[item.region] = []
+    if (!validatorsByRegion[item.region]) {
+      validatorsByRegion[item.region] = [];
     }
 
-    validatorsByRegion[item.region].push(item)
-  })
+    validatorsByRegion[item.region].push(item);
+  });
 
   const maxNodes: Node[] = [];
 
   Object.values(validatorsByRegion).forEach((list) => {
     let maxNode = list[0];
-    
+
     list.forEach((item) => {
       if (item.count > maxNode.count) {
         maxNode = item;
       }
-    })
+    });
 
     maxNodes.push(maxNode);
 
@@ -132,18 +133,12 @@ export const getServerSideProps = async () => {
         [maxNode.latitude, maxNode.longitude],
         [item.latitude, item.longitude],
       ]);
-    })
-  })
-
-  console.log(maxNodes);
+    });
+  });
 
   for (let index = 0; index < maxNodes.length - 1; index++) {
     const validator1 = maxNodes[index];
-    for (
-      let subIndex = index + 1;
-      subIndex < maxNodes.length;
-      subIndex++
-    ) {
+    for (let subIndex = index + 1; subIndex < maxNodes.length; subIndex++) {
       const validator2 = maxNodes[subIndex];
       const { latitude: lat1, longitude: lon1 } = validator1;
       const { latitude: lat2, longitude: lon2 } = validator2;
@@ -171,7 +166,9 @@ export const getServerSideProps = async () => {
 };
 
 const formatStake = (value: number) =>
-  Math.round(value).toLocaleString("RU-ru").replace(",", " ");
+  Math.round(value / 1_000_000_000)
+    .toLocaleString("RU-ru")
+    .replace(",", " ");
 const formatter = Intl.NumberFormat("en", { notation: "compact" });
 export default function Home({
   validators,
