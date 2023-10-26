@@ -166,7 +166,7 @@ export const getServerSideProps = async () => {
 };
 
 const formatStake = (value: number) =>
-  Math.round(value / 1_000_000_000)
+  Math.round(value)
     .toLocaleString("RU-ru")
     .replace(",", " ");
 const formatter = Intl.NumberFormat("en", { notation: "compact" });
