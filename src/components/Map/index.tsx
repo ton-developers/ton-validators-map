@@ -8,22 +8,21 @@ type Point = {
 };
 
 function calculatePath(start: Point, end: Point) {
-  const a = start;
-  const b = {
-    x: start.x + (end.x - start.x) / 2,
-    y: start.y + (end.y - start.y) / 2,
+  const verticalLineLen =
+    Math.sqrt((start.x - end.x) ** 2 + (start.y - end.y) ** 2) / 4;
+  const middle = {
+    x: (start.x + end.x) / 2,
+    y: (start.y + end.y) / 2,
   };
-  const ab = Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
-  const v1x = (b.x = a.x) / ab;
-  const v1y = (b.y - a.y) / ab;
-  const v3x = (v1y > 0 ? -v1y : v1y) * (ab * 0.2);
-  const v3y = (v1x > 0 ? -v1x : v1x) * (ab * 0.2);
-  const cx = a.x + v3x;
-  const cy = a.y + v3y;
-
+  const p = [1, -(end.x - start.x) / (end.y - start.y)];
+  const ratio = verticalLineLen / Math.sqrt(p[0] ** 2 + p[1] ** 2);
+  const resultPoint = {
+    x: p[0] * ratio + middle.x,
+    y: p[1] * ratio + middle.y,
+  };
   return `
-    M ${start.x},${start.y} 
-    Q ${cx},${cy} ${end.x},${end.y} 
+    M ${start.x},${start.y}
+    Q ${resultPoint.x},${resultPoint.y} ${end.x},${end.y}
   `;
 }
 
@@ -160,7 +159,7 @@ export const Map: React.FC<SVGProps> = ({
                 <linearGradient id={`lineGradient${index}`}>
                   <stop offset="0%" stopColor="white" stopOpacity="0">
                     <animate
-                      attributeName="stopOpacity"
+                      attributeName="stop-opacity"
                       values="0; 1; 0; 1; 0; 0"
                       dur={`${y2 * 25}ms`}
                       repeatCount="indefinite"
@@ -169,7 +168,7 @@ export const Map: React.FC<SVGProps> = ({
 
                   <stop offset="100%" stopColor="white" stopOpacity="1">
                     <animate
-                      attributeName="stopOpacity"
+                      attributeName="stop-opacity"
                       values="1; 0; 1; 0; 1; 1"
                       dur={`${y2 * 25}ms`}
                       repeatCount="indefinite"
