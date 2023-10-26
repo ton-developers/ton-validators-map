@@ -1,0 +1,186 @@
+.mapTitle {
+  color: var(--dark-text-primary, #F3F3F6);
+  text-align: center;
+  /* Desktop/H4/Bold */
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 48px; /* 120% */
+  letter-spacing: -0.088px;
+  max-width: 780px;
+  margin: 0 auto 40px;
+}
+
+.mapContainer {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.map {
+  background-color: #2D2D32;
+  border-radius: 24px;
+}
+
+.continent {
+  fill: rgba(255, 255, 255, 0.10);
+}
+
+.validator {
+  --validator-dot-radius: calc(var(--validator-text-font-size, 9.5px) * var(--validator-dot-radius-coef, 1.57) / 2);
+}
+
+.validator1Digits {
+  --validator-text-font-size: 9.5px;
+  --validator-dot-radius-coef: 1.57;
+}
+.validator2Digits {
+  --validator-text-font-size: 10.18px;
+  --validator-dot-radius-coef: 2.4;
+}
+.validator3Digits {
+  --validator-text-font-size: 10.18px;
+  --validator-dot-radius-coef: 2.9;
+}
+.validator4Digits {
+  --validator-text-font-size: 10.18px;
+  --validator-dot-radius-coef: 2.9;
+}
+.validator5Digits {
+  --validator-text-font-size: 10.18px;
+  --validator-dot-radius-coef: 2.9;
+}
+
+.validatorDot {
+  fill: var(--accent-default, #0098EA);
+  r: var(--validator-dot-radius);
+  filter: drop-shadow(0px 0px 5.43px #07ACFF7A);
+}
+
+.validatorDotPulse {
+  --active-opacity: 0.7;
+  --active-scale: 1;
+  --off-opacity: 0;
+  --off-scale: 0;
+  fill: #34BCFF;
+  opacity: var(--active-opacity);
+  r: calc(var(--validator-dot-radius) * 2);
+  transform: scale(var(--off-scale));
+  animation: pulse 20s linear var(--animation-delay, 0s) forwards infinite;
+}
+
+.validatorDotPulseInitial {
+  --active-opacity: 0.7;
+  --active-scale: 1;
+  --off-opacity: 0;
+  --off-scale: 0.4;
+  fill: #34BCFF;
+  opacity: var(--active-opacity);
+  r: calc(var(--validator-dot-radius) * 2);
+  transform: scale(var(--off-scale));
+  animation: pulse-initial 3s ease-out forwards;
+}
+
+.validatorText {
+  fill: #FFF;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  font-size: var(--validator-text-font-size);
+}
+
+.validatorsLink {
+  stroke: url(#connection-linear-gradient);
+  stroke-width: 1.5px;
+  stroke-linecap: round;
+  fill: none;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 0;
+  animation: dash 20s ease-in-out var(--animation-delay, 0s) forwards infinite;
+  opacity: .4;
+}
+
+@keyframes dash {
+  15%, 29.99999% {
+    stroke-dashoffset: 1000;
+  }
+  30% {
+    stroke-dashoffset: -1000;
+  }
+  45%, 100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pulse {
+  70%, 80.0001%, 90.0001% {
+    transform: scale(var(--off-scale));
+    opacity: var(--active-opacity);
+  }
+  80%, 90%, 100% {
+    transform: scale(var(--active-scale));
+    opacity: var(--off-opacity);
+  }
+}
+
+@keyframes pulse-initial {
+  0%, 100% {
+    transform: scale(var(--off-scale));
+    opacity: var(--active-opacity);
+  }
+  99.99999% {
+    transform: scale(var(--active-scale));
+    opacity: var(--off-opacity);
+  }
+}
+
+@media (max-width: 860px) {
+  .validator1Digits {
+    --validator-text-font-size: 14px;
+  }
+  .validator2Digits {
+    --validator-text-font-size: 15px;
+  }
+  .validator3Digits {
+    --validator-text-font-size: 15px;
+  }
+  .validator4Digits {
+    --validator-text-font-size: 15px;
+  }
+  .validator5Digits {
+    --validator-text-font-size: 15px;
+  }
+
+  .validatorsLink {
+    stroke-width: 2px;
+  }
+}
+
+@media (max-width: 600px) {
+  .mapTitle {
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px; /* 123.077% */
+    letter-spacing: -0.049px;
+    margin: 0 auto 24px;
+  }
+
+  .validator1Digits {
+    --validator-text-font-size: 21px;
+  }
+  .validator2Digits {
+    --validator-text-font-size: 22.5px;
+  }
+  .validator3Digits {
+    --validator-text-font-size: 22.5px;
+  }
+  .validator4Digits {
+    --validator-text-font-size: 22.5px;
+  }
+  .validator5Digits {
+    --validator-text-font-size: 22.5px;
+  }
+
+  .validatorsLink {
+    stroke-width: 2.5px;
+  }
+}
