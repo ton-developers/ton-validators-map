@@ -1,0 +1,91 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  max-width: 1120px;
+  padding: 120px 160px;
+  margin: auto;
+}
+
+.map {
+  padding: 0;
+  width: 100%;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 32px;
+  width: 100%;
+}
+
+.break {
+  flex-basis: 100%;
+  height: 0;
+  display: none;
+}
+
+.stake {
+  display: flex;
+}
+
+.stakeMobile {
+  display: none;
+}
+
+.title {
+  color: var(--dark-text-primary, #f3f3f6);
+  text-align: center;
+  width: 640px;
+  margin: auto;
+
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 48px;
+  letter-spacing: -0.088px;
+}
+
+@media screen and (max-width: 1440px) {
+  .wrapper {
+    padding: 56px 16px;
+    width: 100%;
+    height: 100%;
+  }
+  .cards {
+    width: 100%;
+    gap: 16px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .cards > div {
+    display: flex;
+    padding: 16px 16px 14px 16px;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 16px;
+    max-height: 50px;
+  }
+
+  .cards > .stake {
+    display: none;
+  }
+
+  .cards::after {
+    content: "";
+    width: 100%;
+    order: 0;
+  }
+
+  .title {
+    width: 100%;
+    max-width: 640px;
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px;
+    letter-spacing: -0.049px;
+  }
+}

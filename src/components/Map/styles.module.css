@@ -1,0 +1,44 @@
+.continents {
+  fill: #ffffff;
+  fill-opacity: 0.1;
+}
+
+.text {
+  fill: #fff;
+  text-anchor: middle;
+  font-weight: 500;
+}
+
+.text.big {
+  font-size: 15px;
+  line-height: 160%;
+  letter-spacing: -0.016px;
+}
+
+.text.small {
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: -0.015px;
+}
+
+.circle.edge {
+  animation: 1.5s infinite ease-in-out circleBig;
+}
+
+
+@keyframes circleBig {
+  0% {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(2);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+}
