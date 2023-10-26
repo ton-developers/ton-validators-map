@@ -166,9 +166,7 @@ export const getServerSideProps = async () => {
 };
 
 const formatStake = (value: number) =>
-  Math.round(value)
-    .toLocaleString("RU-ru")
-    .replace(",", " ");
+  Math.round(value).toLocaleString("RU-ru").replace(",", " ");
 const formatter = Intl.NumberFormat("en", { notation: "compact" });
 export default function Home({
   validators,
